@@ -3,7 +3,10 @@ import { QueryFunctionContext } from "@tanstack/react-query";
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/v1/",
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? "http://127.0.0.1:8000/api/v1/"
+      : "https://djangoproject-w9c2.onrender.com/api/v1",
   withCredentials: true,
 });
 
@@ -201,6 +204,29 @@ export const uploadQuestion = ({ question, salePk }: IuploadQuestionValiable) =>
     .post(
       `sales/${salePk}/questions`,
       { question },
+      {
+        headers: {
+          "X-CSRFToken": Cookie.get("csrftoken") || "",
+        },
+      }
+    )
+    .then((response) => response.data);
+
+export interface IuploadReQuestionValiable {
+  question: string;
+  salePk: string;
+  parent: number;
+}
+
+export const uploadReQuestion = ({
+  question,
+  salePk,
+  parent,
+}: IuploadReQuestionValiable) =>
+  instance
+    .post(
+      `sales/${salePk}/questions`,
+      { question, parent },
       {
         headers: {
           "X-CSRFToken": Cookie.get("csrftoken") || "",
