@@ -63,6 +63,17 @@ export default function Header() {
         });
       }
     },
+    onError: (error) => {
+      if (toastId.current) {
+        queryClient.refetchQueries(["me"]);
+        toast.update(toastId.current, {
+          status: "error",
+          title: "로그아웃",
+          description: "로그아웃에 실패했습니다.",
+        });
+      }
+      console.log("error: ", error);
+    },
   });
 
   const onLogOut = async () => {
