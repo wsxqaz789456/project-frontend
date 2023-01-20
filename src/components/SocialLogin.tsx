@@ -4,7 +4,7 @@ import { FaGithub, FaComment } from "react-icons/fa";
 export default function SocialLogin() {
   const kakaoParmas = {
     client_id: "1fcabcb723408050bb1665d28f350ad0",
-    redirect_uri: "http://mypractice.store/social/kakao",
+    redirect_uri: "https://mypractice.store/social/kakao",
     response_type: "code",
   };
 
