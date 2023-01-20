@@ -30,10 +30,9 @@ export async function getBoard({ queryKey }: QueryFunctionContext) {
   return response.data;
 }
 
-export async function getMe() {
-  const response = await instance.get(`users/me`);
-  return response.data;
-}
+export const getMe = () =>
+  instance.get(`users/me`).then((response) => response.data);
+
 export async function logOut() {
   const response = await instance.post(`users/log-out`, null, {
     headers: {

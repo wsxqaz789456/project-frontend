@@ -22,12 +22,12 @@ import { SlHandbag } from "react-icons/sl";
 import { Link } from "react-router-dom";
 import { logOut } from "../api";
 import useUser from "../lib/useUser";
-import { IUser } from "../types";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 
+//화면의 상단에 표시될 Header Component 작성
 export default function Header() {
-  const { isLoggedIn, user } = useUser();
+  const { userLoading, isLoggedIn, user } = useUser();
 
   const {
     isOpen: isLoginOpen,
@@ -106,27 +106,28 @@ export default function Header() {
           aria-label="Toggle dark mode"
           icon={colorMode === "light" ? <FaMoon /> : <FaSun />}
         />
-        {!isLoggedIn ? (
-          <>
-            <Button onClick={onLoginOpen}>Log in</Button>
-            <Button onClick={onSignUpOpen} colorScheme={"red"}>
-              Sign up
-            </Button>
-          </>
-        ) : (
-          <Menu>
-            <MenuButton>
-              <Avatar size={"md"} name={user?.name} src={user?.avatar} />
-            </MenuButton>
-            <MenuList>
-              <Link to="/sales/upload">
-                <MenuItem>판매하기</MenuItem>
-              </Link>
-
-              <MenuItem onClick={onLogOut}>로그아웃</MenuItem>
-            </MenuList>
-          </Menu>
-        )}
+        {!userLoading ? (
+          !isLoggedIn ? (
+            <>
+              <Button onClick={onLoginOpen}>Log in</Button>
+              <Button onClick={onSignUpOpen} colorScheme={"red"}>
+                Sign up
+              </Button>
+            </>
+          ) : (
+            <Menu>
+              <MenuButton>
+                <Avatar size={"md"} name={user?.name} src={user?.avatar} />
+              </MenuButton>
+              <MenuList>
+                <Link to="/sales/upload">
+                  <MenuItem>판매하기</MenuItem>
+                </Link>
+                <MenuItem onClick={onLogOut}>로그아웃</MenuItem>
+              </MenuList>
+            </Menu>
+          )
+        ) : null}
       </HStack>
       <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
       <SignUpModal isOpen={isSignUpOpen} onClose={onSignUpClose} />

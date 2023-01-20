@@ -3,11 +3,12 @@ import { getMe } from "../api";
 import { IUser } from "../types";
 
 export default function useUser() {
-  const { data, isError } = useQuery<IUser>(["me"], getMe, {
+  const { isLoading, data, isError } = useQuery<IUser>(["me"], getMe, {
     retry: false,
   });
 
   return {
+    userLoading: isLoading,
     user: data,
     isLoggedIn: !isError,
   };
